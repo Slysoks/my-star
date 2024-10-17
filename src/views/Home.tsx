@@ -5,13 +5,19 @@ import {
   StyleSheet,
   TouchableNativeFeedback,
   ScrollView,
+  TextInput,
+  Animated,
+  Platform
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
   const [buses, setBuses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [stop, setStop] = useState("Loges");
+  const [stop, setStop] = useState<string>("Les Gayeulles");
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,8 +25,8 @@ const Home = () => {
 
       const limit = 10;
       const timezone = "Europe/Paris";
-      const short_line_name = "C1";
-      const destination = "Chantepie";
+      const short_line_name = "51";
+      const destination = "Betton";
 
       const dataset_name = "tco-bus-circulation-passages-tr";
 
@@ -36,12 +42,12 @@ const Home = () => {
 
       try {
         const response = await fetch(url);
-        const data = await response.json();
+        const data = JSON.parse(await response.text());
         const buses = data.results;
-        console.log(buses);
         buses.sort((a: any, b: any) => {
           return new Date(a.arrivee).getTime() - new Date(b.arrivee).getTime();
         });
+        console.log(buses)
         setBuses(buses);
       } catch (error) {
         console.error(error);
@@ -58,38 +64,44 @@ const Home = () => {
   }
 
   return (
-    <View style={{ marginTop: 75, width: '100%' }}>
-      <Text style={{ fontSize: 28 }}>
-        { stop }
-      </Text>
-      <ScrollView>
-      <View style={{ gap: 8, marginTop: 10, width: '100%' }}>
-        {buses.map((bus, index) => (
-          <View key={index} style={{ width: '80%', borderRadius: 20, overflow: 'hidden' }}>
-            <TouchableNativeFeedback>
-              <View style={[styles.container, { flexDirection: 'row', zIndex: 100 }]}>
+    <View style={{ marginTop: 75, width: '100%', gap:5, }}>
+      <View style={{ justifyContent: 'center' }}>
+        <Text style={{ textAlign: 'center' }}>
+          { stop }
+        </Text>
+      </View>
+      <View style={{ alignItems: 'center' }}>
+        <ScrollView style={ styles.scroll }>
+          { buses.map((bus) => (
+            <TouchableNativeFeedback key={bus.recordid}
+              style={{ width: '95%' }}
+              onPress={() => {
+                if (Platform.OS === 'ios') {
+                  Animated.timing(new Animated.Value(1), {
+                    toValue: 0.9,
+                    duration: 100,
+                    useNativeDriver: true,
+                  }).start();
+                }
+              }}
+            >
+              <View style={styles.container}>
                 <Image
-                  source={require('../../assets/bus.png')}
                   style={styles.busImage}
+                  source={require('../../assets/bus.png')}
                 />
                 <Divider orientation="vertical" />
-                <View style={{ marginLeft: 10 }}>
-                  <Text style={{ fontWeight: '600' }}>
-                      { new Date(bus.arrivee).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', 'hour12':false }) }
-                  </Text>
+                <View style={{ marginLeft: 5, gap:5 }}>
+                  <Text>{bus.nomcourtligne}</Text>
                   <Text>
-                    { bus.nomcourtligne }
-                  </Text>
-                  <Text>
-                    {bus.destination}
+                    { new Date(bus.arrivee).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) }
                   </Text>
                 </View>
               </View>
             </TouchableNativeFeedback>
-          </View>
-        ))}
+          ))}
+        </ScrollView>
       </View>
-    </ScrollView>
     </View>
   );
 };
@@ -119,6 +131,15 @@ interface DividerProps {
  };
 
 const styles = StyleSheet.create({
+  input: {
+    height: 50,
+    margin: 12,
+    borderWidth: 1,
+    borderBottomWidth: 2,
+    borderRadius: 10,
+    borderColor: '#d0d0d0',
+    padding: 10,
+  },
   container: {
     flexDirection: 'row',
     borderColor: '#d0d0d0',
@@ -126,14 +147,20 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     padding: 10,
     borderRadius: 20,
-    width: 400,
+    width: '95%',
+    marginBottom: 10,
   },
   busImage: {
     width: 75,
     height: 75,
     borderRightColor: '#d0d0d0',
     borderRightWidth: 1,
+    borderRadius: 10,
   },
+  scroll: {
+    width: '100%',
+    height: '100%',
+  }
 });
 
 export default Home;
