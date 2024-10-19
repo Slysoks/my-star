@@ -7,26 +7,25 @@ import {
   ScrollView,
   TextInput,
   Animated,
-  Platform
+  Platform,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Home = () => {
+const Home = ({navigation}:any) => {
   const [buses, setBuses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [stop, setStop] = useState<string>("Les Gayeulles");
-
-
+  const [stop, setStop] = useState<string>();
 
   useEffect(() => {
     const fetchData = async () => {
       const uri = "https://data.explore.star.fr/";
 
+      setStop(await AsyncStorage.getItem('stop') || "Gares");
       const limit = 10;
       const timezone = "Europe/Paris";
-      const short_line_name = "51";
-      const destination = "Betton";
+      const short_line_name = await AsyncStorage.getItem('short_line_name') || "C1";
+      const destination = await AsyncStorage.getItem('destination') || "Gares";
 
       const dataset_name = "tco-bus-circulation-passages-tr";
 
@@ -47,7 +46,6 @@ const Home = () => {
         buses.sort((a: any, b: any) => {
           return new Date(a.arrivee).getTime() - new Date(b.arrivee).getTime();
         });
-        console.log(buses)
         setBuses(buses);
       } catch (error) {
         console.error(error);
@@ -65,6 +63,17 @@ const Home = () => {
 
   return (
     <View style={{ marginTop: 75, width: '100%', gap:5, }}>
+      <TouchableNativeFeedback
+        onPress={() => {
+          navigation.navigate('Settings');
+        }}
+      >
+        <View>
+          <Text>
+            { "Settings" }
+          </Text>
+        </View>
+      </TouchableNativeFeedback>
       <View style={{ justifyContent: 'center' }}>
         <Text style={{ textAlign: 'center' }}>
           { stop }
@@ -73,7 +82,7 @@ const Home = () => {
       <View style={{ alignItems: 'center' }}>
         <ScrollView style={ styles.scroll }>
           { buses.map((bus) => (
-            <TouchableNativeFeedback key={bus.recordid}
+            <TouchableNativeFeedback key={bus.idbus}
               style={{ width: '95%' }}
               onPress={() => {
                 if (Platform.OS === 'ios') {
@@ -91,10 +100,10 @@ const Home = () => {
                   source={require('../../assets/bus.png')}
                 />
                 <Divider orientation="vertical" />
-                <View style={{ marginLeft: 5, gap:5 }}>
+                <View style={{ marginLeft: 5, gap:5}}>
                   <Text>{bus.nomcourtligne}</Text>
                   <Text>
-                    { new Date(bus.arrivee).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) }
+                    { new Date(bus.arrivee).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) }
                   </Text>
                 </View>
               </View>
@@ -111,14 +120,14 @@ interface DividerProps {
   orientation?: 'horizontal' | 'vertical';
   color?: string;
   dividerStyle?: any;
- }
- 
- const Divider: React.FC<DividerProps> = ({
+}
+
+const Divider: React.FC<DividerProps> = ({
   width = 1,
   orientation = 'horizontal',
   color = '#DFE4EA',
   dividerStyle,
- }) => {
+}) => {
   const dividerStyles = [
     {width: orientation === 'horizontal' ? '100%' : width},
     {height: orientation === 'vertical' ? '100%' : width},
@@ -126,9 +135,9 @@ interface DividerProps {
     {margin: 5},
     dividerStyle,
   ];
- 
+
   return <View style={dividerStyles} />;
- };
+};
 
 const styles = StyleSheet.create({
   input: {
