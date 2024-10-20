@@ -8,6 +8,4 @@ const Home = ({navigation}:any) => {
   );
 }
 
-export {
-  Home
-};
+export default Home;
