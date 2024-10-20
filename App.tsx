@@ -26,7 +26,7 @@ const Tab = createBottomTabNavigator();
 const TabGroup = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Accueil" options={{ headerTitle: "T" }} component={Home} />
+      <Tab.Screen name="Accueil" component={Home} />
       <Tab.Screen name="Horaires" component={Horaires} />
     </Tab.Navigator>
   );
