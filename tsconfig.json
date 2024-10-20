@@ -7,6 +7,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@views/*": ["src/views/*"],
+      "star": ["src/providers/star.ts"],
     }
   }
 }
