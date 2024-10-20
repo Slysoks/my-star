@@ -1,24 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState, useEffect } from 'react';
-import { Text, View, SafeAreaView } from 'react-native';
+import { Text, Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NextBus } from 'star'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Home } from '@/views';
 
-const Stack = createNativeStackNavigator();
-
-export default function App() {
-  const [nextBus, setNextBus] = useState<any>(undefined);
-
-  useEffect(() => {
-    setNextBus(NextBus);
-  }, []);
-
+const App = () => {
   return (
-    <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-      <Text>
-        { nextBus ? 'NextBus is defined' : 'NextBus is not defined' }
-      </Text>
+    <SafeAreaView style={{
+      paddingTop: Platform.OS == 'android' ? 25 : 0,
+      flex: 1,
+    }}>
+      <Text>App</Text>
+      <View style={styles.navigationContainer}>
+        <NavigationContainer>
+          <TabGroup />
+        </NavigationContainer>
+      </View>
     </SafeAreaView>
   );
 }
+
+const Tab = createBottomTabNavigator();
+
+const TabGroup = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={Home} />
+    </Tab.Navigator>
+  );
+}
+
+const styles = StyleSheet.create({
+  navigationContainer: {
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+  },
+});
+
+export default App;
