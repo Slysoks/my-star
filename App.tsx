@@ -11,7 +11,7 @@ const App = () => {
       flex: 1,
       backgroundColor: Colors.light,
     }}>
-      <Text>App</Text>
+      <Text>Selector branch !</Text>
       <View style={styles.navigationContainer}>
         <NavigationContainer>
           <TabGroup />
