@@ -1,8 +1,10 @@
 import { Text, Platform, SafeAreaView, StyleSheet, View } from 'react-native';
+import { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home, Horaires } from '@/views';
 import { Colors } from 'consts';
+import { NextBus } from '@/providers/star';
 
 const App = () => {
   return (
@@ -11,7 +13,7 @@ const App = () => {
       flex: 1,
       backgroundColor: Colors.light,
     }}>
-      <Text>App</Text>
+      <Home />
       <View style={styles.navigationContainer}>
         <NavigationContainer>
           <TabGroup />
