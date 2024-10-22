@@ -1,6 +1,6 @@
 // NextBus provider
 interface NextBusProps {
-  lineId: number | undefined;
+  lineId: string | undefined;
   lineName?: string | undefined;
   destinationId?: number | undefined;
   destinationName?: string | undefined;
@@ -47,7 +47,7 @@ const NextBus = async (props: NextBusProps) => {
 
 // Global line provider
 interface LineListProps {
-  lineId?: number | undefined;
+  lineId?: string | undefined;
   lineName?: string | undefined;
   family?: string | undefined;
   limit?: number;
