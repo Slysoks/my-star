@@ -12,7 +12,7 @@ const App = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await LinePicture({ lineId: '0003', resolution: 1 });
-      setImage(data.image.url ? data.image.url : undefined);
+      setImage(data?.image?.url ?? undefined);
     };
 
     fetchData();
