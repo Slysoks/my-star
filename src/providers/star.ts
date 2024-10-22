@@ -95,7 +95,6 @@ const LinePicture = async (props: LinePictureProps) => {
   // Fetch the data
   const response = await fetch(uri);
   const data = await response.json();
-  console.log(data);
 
   if (data.results.length === 0) return null;
   if (data.results.length === 1) return data.results[0];
