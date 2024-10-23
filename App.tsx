@@ -20,15 +20,8 @@ const App = () => {
   }, []);
   return (
     <SafeAreaView style={{
-      paddingTop: Platform.OS == 'android' ? 25 : 0,
       flex: 1,
-      backgroundColor: Colors.light,
     }}>
-      <ScrollView style={styles.navigationContainer}>
-        <Text>
-          { image }
-        </Text>
-      </ScrollView>
       <NavigationContainer>
         <TabGroup />
       </NavigationContainer>
