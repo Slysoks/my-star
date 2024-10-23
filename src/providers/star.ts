@@ -10,37 +10,36 @@ interface NextBusProps {
   busId?: number | undefined;
   timezone?: string | undefined;
   limit?: number;
-}
+};
 
 const NextBus = async (props: NextBusProps) => {
   // Get the props
-  const { lineId, lineName, destinationId, destinationName, stopId, stopName, rideId, busId, timezone, limit=20 } = props;
-  const url = 'https://data.explore.star.fr/api/explore/v2.1/catalog/datasets/tco-bus-circulation-passages-tr/records?';
+  const { lineId, lineName, destinationId, destinationName, stopId, stopName, rideId, busId, timezone='Europe/Paris', limit=20 } = props;
+  const url = `https://data.explore.star.fr/api/explore/v2.1/catalog/datasets/tco-bus-circulation-passages-tr/records?limit=${limit}&refine=`;
   
   const params = {
-    lineId: lineId,
-    lineName: lineName,
-    destinationId: destinationId,
-    destinationName: destinationName,
-    stopId: stopId,
+    idligne: lineId,
+    nomcourtligne: lineName,
+    sens: destinationId,
+    destination: destinationName,
+    nomarret: stopId,
     stopName: stopName,
-    rideId: rideId,
-    busId: busId,
-    timezone: timezone,
-    limit: limit,
+    idcourse: rideId,
+    idbus: busId,
   };
 
   // Build the query string
   const args = Object.keys(params)
     .filter((key) => params[key as keyof typeof params] !== undefined)
-    .map((key) => key + '=' + params[key as keyof typeof params])
-    .join('&');
+    .map((key) => key + ':' + params[key as keyof typeof params])
+    .join('&refine=');
 
   const uri = url + args;
 
   // Fetch the data
   const response = await fetch(uri);
-  const data = await JSON.parse(await response.text());
+  return await response.text();
+  const data = JSON.parse(await response.text());
 
   return (data);
 };
@@ -51,7 +50,7 @@ interface LineListProps {
   lineName?: string | undefined;
   family?: string | undefined;
   limit?: number;
-}
+};
 
 const LineList = async (props: LineListProps) => {
   // Get the props
@@ -84,7 +83,7 @@ const LineList = async (props: LineListProps) => {
 interface LinePictureProps {
   lineId: string;
   resolution: number;
-}
+};
 
 const LinePicture = async (props: LinePictureProps) => {
   // Get the props
@@ -111,6 +110,23 @@ const LinePicture = async (props: LinePictureProps) => {
   });
 
   return selectedPicture;
+};
+
+// Bus route end to end provider
+interface BusRouteProps {
+  lineId: string;
+};
+
+const BusRoute = async (props: BusRouteProps) => {
+  // Get the props
+  const { lineId } = props;
+  const uri = `https://data.explore.star.fr/api/explore/v2.1/catalog/datasets/tco-bus-topologie-parcours-td/records?limit=5&refine=idligne:${lineId}`;
+  
+  // Fetch the data
+  const response = await fetch(uri);
+  const data = await response.json();
+
+  return data;
 };
 
 export {
