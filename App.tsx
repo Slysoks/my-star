@@ -27,7 +27,7 @@ const App = () => {
       </NavigationContainer>
     </SafeAreaView>
   );
-}
+};
 
 const Tab = createBottomTabNavigator();
 
@@ -38,7 +38,7 @@ const TabGroup = () => {
       <Tab.Screen name="Horaires" component={Horaires} />
     </Tab.Navigator>
   );
-}
+};
 
 const styles = StyleSheet.create({
   navigationContainer: {
