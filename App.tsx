@@ -6,8 +6,10 @@ import { Home, Horaires } from '@/views';
 import { Colors } from 'consts';
 import { NextBus } from '@/providers/star';
 
+
 const App = () => {
   const [image, setImage] = useState<string | undefined>(undefined);
+  const Tab = createBottomTabNavigator();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,20 +25,12 @@ const App = () => {
       flex: 1,
     }}>
       <NavigationContainer>
-        <TabGroup />
+        <Tab.Navigator>
+          <Tab.Screen name="Accueil" component={Home} />
+          <Tab.Screen name="Horaires" component={Horaires} />
+        </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
-  );
-};
-
-const Tab = createBottomTabNavigator();
-
-const TabGroup = () => {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Accueil" component={Home} />
-      <Tab.Screen name="Horaires" component={Horaires} />
-    </Tab.Navigator>
   );
 };
 
