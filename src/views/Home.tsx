@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, ViewBase } from "react-native";
 
 const linesTypes = [
   { name: "Chronostar", id: 1 },
@@ -8,10 +8,7 @@ const linesTypes = [
 
 const Home = ({ navigation }: any) => {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <ScrollView>
-
-      </ScrollView>
+    <View>
     </View>
   );
 };

@@ -4,22 +4,21 @@
     "slug": "star&moi",
     "version": "1.0.0-Dev",
     "orientation": "portrait",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFFFFF"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FFFFFF"
       }
     },
     "androidStatusBar": {
-      "backgroundColor": "#ffffff",
-      "barStyle": "dark-content"
+      "translucent": true
     },
     "plugins": [
       "expo-font",

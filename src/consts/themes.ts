@@ -1,32 +1,28 @@
-import { DefaultTheme, DarkTheme, type Theme } from "@react-navigation/native";
-
 export const fonts = {
   regular: "DMSans-Regular",
   italic: "DMSans-Italic",
 }
 
-export const Light: Theme = {
-  ...DefaultTheme,
+export const Light = {
   colors: {
-    ...DefaultTheme.colors,
-    primary: "#29947A",
+    primary: "#45B06B",
+    secondary: "#E6F0FF",
     background: "#FFFFFF",
-    card: "#FFFFFF",
-    text: "#000000",
-    border: "#d5d5d5",
-    notification: "#29947A",
-  },
+    white: "#FFFFFF",
+    black: "#000000",
+    auto: "#FFFFFF",
+    contrast: "#000000",
+  }
 };
 
-export const Dark: Theme = {
-  ...DarkTheme,
+export const Dark = {
   colors: {
-    ...DarkTheme.colors,
-    primary: "#29947A",
-    background: "#0a0a0a",
-    card: "#111111",
-    text: "#FFFFFF",
-    border: "#252525",
-    notification: "#29947A",
-  },
+    primary: "#63FD9A",
+    secondary: "#173166",
+    background: "#000000",
+    white: "#F0F0F0",
+    black: "#000000",
+    auto: "#000000",
+    contrast: "#FFFFFF",
+  }
 };

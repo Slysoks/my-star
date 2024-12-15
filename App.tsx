@@ -1,13 +1,30 @@
-import { Platform, SafeAreaView, View, useColorScheme } from "react-native";
+import {
+  Appearance,
+  Platform,
+  SafeAreaView,
+  View,
+  useColorScheme,
+  StatusBar as RNStatusBar,
+} from "react-native";
 import { useEffect, useState } from "react";
-import { NavigationContainer, Theme } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Home, Horaires } from "@/views";
-import { Home as HomeIcon, CalendarClock } from "lucide-react-native";
+
 import * as NavigationBar from "expo-navigation-bar";
 import { Light, Dark, fonts } from "@/consts/themes";
 import { useFonts } from "expo-font";
 import * as Haptics from "expo-haptics";
+import { StatusBar } from "expo-status-bar";
+
+import {
+  Home as HomeIcon,
+  CalendarClock,
+  Bell,
+  Route,
+  CreditCard,
+} from "lucide-react-native";
+
+import { Home, Horaires } from "@/views";
 
 const Tabs = [
   {
@@ -20,12 +37,30 @@ const Tabs = [
     component: Horaires,
     icon: CalendarClock,
   },
+  {
+    name: "KorriGo",
+    component: Home,
+    icon: CreditCard,
+  },
+  {
+    name: "Itinéraire",
+    component: Home,
+    icon: Route,
+  },
+  {
+    name: "Alertes",
+    component: Home,
+    icon: Bell,
+  },
 ];
 
 const App = () => {
-  // Get the device color scheme (light or dark)
-  const scheme = useColorScheme();
   const Tab = createBottomTabNavigator();
+
+  // Get the device color scheme (light or dark)
+  let scheme = useColorScheme();
+  if (scheme === null || scheme === undefined) scheme = "light";
+  const [theme, setTheme] = useState(scheme === "dark" ? Dark : Light);
 
   // Load custom fonts
   const [fontsLoaded, fontsError] = useFonts({
@@ -37,34 +72,49 @@ const App = () => {
   useEffect(() => {
     async function setNavigationBar() {
       await NavigationBar.setPositionAsync("absolute");
-      await NavigationBar.setBackgroundColorAsync("#ffffff00");
+      await NavigationBar.setBackgroundColorAsync(theme.colors.secondary);
+      if (scheme === "dark") await NavigationBar.setButtonStyleAsync("light");
+      else await NavigationBar.setButtonStyleAsync("dark");
     }
 
     Platform.OS === "android" && setNavigationBar();
   }, []);
 
-  const theme: Theme = scheme === "dark" ? Dark : Light;
+  async function setBtnTheme() {
+    scheme === "dark"
+      ? await NavigationBar.setButtonStyleAsync("light")
+      : await NavigationBar.setButtonStyleAsync("dark");
+  }
+
+  // Listen to system theme changes
+  useEffect(() => {
+    Appearance.addChangeListener(({ colorScheme }) => {
+      setTheme(colorScheme === "dark" ? Dark : Light);
+      setBtnTheme()
+    });
+  }, []);
 
   // If fonts are not loaded, return null
   if (!fontsLoaded && !fontsError) return null;
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-      }}
-    >
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar style={"auto"} />
       <View
-        style={Platform.OS === "android" ? { height: 40 } : { height: 0 }}
+        style={{
+          height: Platform.OS === "android" ? RNStatusBar.currentHeight : 0,
+          backgroundColor: theme.colors.auto,
+        }}
       />
       <NavigationContainer
-        theme={theme}
         onStateChange={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         }}
       >
-        <Tab.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Navigator
+          screenOptions={{ headerShown: false }}
+          sceneContainerStyle={{ backgroundColor: theme.colors.background }}
+        >
           {Tabs.map((tab, index) => (
             <Tab.Screen
               key={index}
@@ -76,6 +126,12 @@ const App = () => {
                 ),
                 tabBarLabelStyle: {
                   fontFamily: fonts.regular,
+                },
+                tabBarActiveTintColor: theme.colors.primary,
+                tabBarInactiveTintColor: theme.colors.contrast,
+                tabBarStyle: {
+                  backgroundColor: theme.colors.secondary,
+                  height: 100,
                 },
               }}
             />
