@@ -16,6 +16,14 @@
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       }
-    }
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#ffffff",
+      "barStyle": "dark-content"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-splash-screen"
+    ]
   }
 }
