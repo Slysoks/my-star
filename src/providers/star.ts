@@ -15,15 +15,15 @@ interface NextBusProps {
 const NextBus = async (props: NextBusProps) => {
   // Get the props
   const { lineId, lineName, destinationId, destinationName, stopId, stopName, rideId, busId, timezone='Europe/Paris', limit=20 } = props;
-  const url = `https://data.explore.star.fr/api/explore/v2.1/catalog/datasets/tco-bus-circulation-passages-tr/records?limit=${limit}&refine=`;
+  const url = `https://data.explore.star.fr/api/explore/v2.1/catalog/datasets/tco-bus-circulation-passages-tr/records?limit=${limit}&order_by=arrivee&timezone=${timezone}&refine=`;
   
   const params = {
     idligne: lineId,
     nomcourtligne: lineName,
     sens: destinationId,
     destination: destinationName,
-    nomarret: stopId,
-    stopName: stopName,
+    idarret: stopId,
+    nomarret: stopName,
     idcourse: rideId,
     idbus: busId,
   };
@@ -38,8 +38,7 @@ const NextBus = async (props: NextBusProps) => {
 
   // Fetch the data
   const response = await fetch(uri);
-  return await response.text();
-  const data = JSON.parse(await response.text());
+  const data = await response.json();
 
   return (data);
 };
@@ -82,13 +81,12 @@ const LineList = async (props: LineListProps) => {
 // Line picture provider
 interface LinePictureProps {
   lineId: string;
-  resolution: number;
+  resolution?: number | undefined;
 };
 
 const LinePicture = async (props: LinePictureProps) => {
   // Get the props
   const { lineId, resolution=1 } = props;
-  if (resolution !== 0 && resolution !== 1) return null;
   const uri = `https://data.explore.star.fr/api/explore/v2.1/catalog/datasets/tco-bus-lignes-pictogrammes-dm/records?limit=5&refine=idligne:${lineId}`;
   
   // Fetch the data
@@ -133,4 +131,5 @@ export {
   NextBus,
   LineList,
   LinePicture,
+  BusRoute,
 };
