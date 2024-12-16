@@ -17,9 +17,6 @@
         "backgroundColor": "#FFFFFF"
       }
     },
-    "androidStatusBar": {
-      "translucent": true
-    },
     "plugins": [
       "expo-font",
       "expo-splash-screen"
