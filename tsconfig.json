@@ -7,7 +7,8 @@
     "paths": {
       "@/*": ["src/*"],
       "star": ["src/providers/star.ts"],
-      "consts": ["src/consts/index.ts"],
+      "@consts": ["src/consts/themes.ts"],
+      "@assets": ["assets/*"],
     }
   }
 }

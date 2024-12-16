@@ -1,45 +1,73 @@
-import { Text, Platform, SafeAreaView, StyleSheet, View } from 'react-native';
-import { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home, Horaires } from '@/views';
-import { Colors } from 'consts';
-import { NextBus } from '@/providers/star';
+import {
+  Appearance,
+  Platform,
+  SafeAreaView, useColorScheme,
+  StatusBar as RNStatusBar,
+  TouchableOpacity,
+  Text
+} from "react-native";
+import { useEffect, useState } from "react";
+
+import * as NavigationBar from "expo-navigation-bar";
+import { Light, Dark } from "@/consts/themes";
+import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
+
+import Router from "@/router";
 
 const App = () => {
+  // Get the device color scheme (light or dark)
+  let scheme = useColorScheme();
+  if (scheme === null || scheme === undefined) scheme = "light";
+  const [theme, setTheme] = useState(scheme === "dark" ? Dark : Light);
+
+  // Load custom fonts
+  const [fontsLoaded, fontsError] = useFonts({
+    "DMSans-Regular": require("./assets/fonts/DMSans-Regular.ttf"),
+    "DMSans-Italic": require("./assets/fonts/DMSans-Italic.ttf"),
+  });
+
+  // Change navigaiton bar color (Android only)
+  NavigationBar.setPositionAsync("absolute");
+  Platform.OS === "android" && setNavigationBarTheme();
+
+  async function setNavigationBarTheme() {
+    await NavigationBar.setBackgroundColorAsync(theme.colors.secondary);
+    if (scheme === "dark") await NavigationBar.setButtonStyleAsync("light");
+    else await NavigationBar.setButtonStyleAsync("dark");
+  }
+
+  // Listen to system theme changes
+  useEffect(() => {
+    Appearance.addChangeListener(({ colorScheme }) => {
+      console.log("Theme changed to", colorScheme);
+      setTheme(colorScheme === "dark" ? Dark : Light);
+      setNavigationBarTheme();
+    });
+  }, []);
+
+  // If fonts are not loaded, return null
+  if (!fontsLoaded && !fontsError) return null;
+
   return (
-    <SafeAreaView style={{
-      paddingTop: Platform.OS == 'android' ? 25 : 0,
-      flex: 1,
-      backgroundColor: Colors.light,
-    }}>
-      <Home />
-      <View style={styles.navigationContainer}>
-        <NavigationContainer>
-          <TabGroup />
-        </NavigationContainer>
-      </View>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        paddingTop: Platform.OS === "android" ? RNStatusBar.currentHeight : 0,
+      }}
+    >
+      <StatusBar style={"auto"} />
+      <TouchableOpacity
+        style={{
+          padding: 10,
+          backgroundColor: theme.colors.primary,
+        }}
+      >
+        <Text>Update theme</Text>
+      </TouchableOpacity>
+      <Router theme={theme} />
     </SafeAreaView>
   );
-}
-
-const Tab = createBottomTabNavigator();
-
-const TabGroup = () => {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Accueil" component={Home} />
-      <Tab.Screen name="Horaires" component={Horaires} />
-    </Tab.Navigator>
-  );
-}
-
-const styles = StyleSheet.create({
-  navigationContainer: {
-    position: 'absolute',
-    width: '100%',
-    bottom: 0,
-  },
-});
+};
 
 export default App;
