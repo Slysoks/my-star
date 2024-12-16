@@ -57,14 +57,6 @@ const App = () => {
       }}
     >
       <StatusBar style={"auto"} />
-      <TouchableOpacity
-        style={{
-          padding: 10,
-          backgroundColor: theme.colors.primary,
-        }}
-      >
-        <Text>Update theme</Text>
-      </TouchableOpacity>
       <Router theme={theme} />
     </SafeAreaView>
   );
