@@ -2,6 +2,7 @@
 import * as Haptics from "expo-haptics";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { LocalSvg } from 'react-native-svg/css';
 import {
   Home as HomeIcon,
   CalendarClock,
@@ -55,7 +56,7 @@ const Router = ({ theme }:any) => {
           screenOptions={{ headerShown: false }}
           sceneContainerStyle={{ backgroundColor: theme.colors.background }}
         >
-          {Tabs.map((tab, index) => (
+          {Tabs.map((tab, index) => tab.name !== 'KorriGo' ? (
             <Tab.Screen
               key={index}
               name={tab.name}
@@ -63,6 +64,31 @@ const Router = ({ theme }:any) => {
               options={{
                 tabBarIcon: ({ color, size }) => (
                   <tab.icon size={size} color={color} />
+                ),
+                tabBarLabelStyle: {
+                  fontFamily: fonts.regular,
+                },
+                tabBarActiveTintColor: theme.colors.primary,
+                tabBarInactiveTintColor: theme.colors.contrast,
+                tabBarStyle: {
+                  backgroundColor: theme.colors.secondary,
+                  height: 100,
+                },
+              }}
+            />
+          ) : (
+            <Tab.Screen
+              key={index}
+              name={tab.name}
+              component={tab.component}
+              options={{
+                tabBarIcon: ({ color, size, focused }) => (
+                  <LocalSvg
+                    asset={focused ? require("../assets/icons/korrigo.svg"): require("../assets/icons/korrigoOutline.svg")}
+                    width={size+10}
+                    height={size+10}
+                    color={color}
+                  />
                 ),
                 tabBarLabelStyle: {
                   fontFamily: fonts.regular,
