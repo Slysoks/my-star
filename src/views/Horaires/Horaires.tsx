@@ -23,7 +23,6 @@ const Horaires = ({ navigation }: any) => {
       limit: -1,
     })
       .then((data) => {
-        console.log(data.results);
         setBuses(data.results || []);
       })
       .catch((error) => {
