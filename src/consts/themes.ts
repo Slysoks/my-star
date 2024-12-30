@@ -3,6 +3,10 @@ import { DefaultTheme, DarkTheme, type Theme } from "@react-navigation/native";
 export const fonts = {
   regular: "DMSans-Regular",
   italic: "DMSans-Italic",
+  bold: 800,
+  semiBold: 600,
+  medium: 500,
+  light: 300,
 }
 
 
