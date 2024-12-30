@@ -1,15 +1,10 @@
-import { View, Text, TouchableOpacity, ScrollView, ViewBase } from "react-native";
-
-const linesTypes = [
-  { name: "Chronostar", id: 1 },
-  { name: "Regular", id: 2 },
-  { name: "Regional", id: 3 },
-];
+import { ScrollView } from "react-native";
 
 const Home = ({ navigation }: any) => {
   return (
-    <View>
-    </View>
+    <ScrollView>
+      
+    </ScrollView>
   );
 };
 
