@@ -1,6 +1,6 @@
 // NextBus provider
 interface NextBusProps {
-  lineId: string | undefined;
+  lineId?: string | undefined;
   lineName?: string | undefined;
   destinationId?: number | undefined;
   destinationName?: string | undefined;
@@ -15,7 +15,7 @@ interface NextBusProps {
 const NextBus = async (props: NextBusProps) => {
   // Get the props
   const { lineId, lineName, destinationId, destinationName, stopId, stopName, rideId, busId, timezone='Europe/Paris', limit=20 } = props;
-  const url = `https://data.explore.star.fr/api/explore/v2.1/catalog/datasets/tco-bus-circulation-passages-tr/records?limit=${limit}&order_by=arrivee&timezone=${timezone}&refine=`;
+  const url = `https://data.explore.star.fr/api/explore/v2.1/catalog/datasets/tco-bus-circulation-passages-tr/records?limit=${limit}&order_by=depart&timezone=${timezone}&refine=`;
   
   const params = {
     idligne: lineId,
