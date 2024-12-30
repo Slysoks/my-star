@@ -14,7 +14,10 @@ import { type Theme } from "@react-navigation/native";
 import React, { useEffect } from "react";
 
 import { STARLight, STARDark, fonts } from "@/consts/themes";
-import { Home, Horaires } from "@/views";
+import Home from "@/views/Home/Home";
+import Horaires from "@/views/Horaires/Horaires";
+import Itineraire from "@/views/Itineraire/Itineraire";
+import Alerts from "@/views/Alerts/Alerts";
 
 const Tabs = [
   {
@@ -27,19 +30,24 @@ const Tabs = [
     component: Horaires,
     icon: CalendarClock,
   },
-  {
+/*  {
     name: "KorriGo",
+    component: Home,
+    icon: CreditCard,
+  },*/
+  {
+    name: "KorriGoV2",
     component: Home,
     icon: CreditCard,
   },
   {
     name: "Itinéraire",
-    component: Home,
+    component: Itineraire,
     icon: Route,
   },
   {
     name: "Alertes",
-    component: Home,
+    component: Alerts,
     icon: Bell,
   },
 ];
@@ -103,13 +111,15 @@ const Router = () => {
                     }
                     width={size + 10}
                     height={size + 10}
-                    color={color}
+                    color={"#ffffff"}
+                    style={{
+                      
+                    }}
                   />
                 ),
                 tabBarLabelStyle: {
                   fontFamily: fonts.regular,
                 },
-                tabBarActiveTintColor: theme.colors.primary,
                 tabBarStyle: {
                   height: 100,
                 },
