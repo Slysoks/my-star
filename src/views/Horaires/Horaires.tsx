@@ -8,8 +8,11 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import { NextBus } from "@/providers/star";
+import { useTheme } from "@react-navigation/native";
 
 const Horaires = ({ navigation }: any) => {
+  const { colors } = useTheme();
+
   const [stopName, setStopName] = useState<string>("Loges");
   const [line, setLine] = useState<string>("C1");
   const [destination, setDestination] = useState<string>("Saint-Grégoire");
@@ -20,7 +23,6 @@ const Horaires = ({ navigation }: any) => {
       stopName: stopName,
       lineName: line,
       destinationName: destination,
-      limit: -1,
     })
       .then((data) => {
         setBuses(data.results || []);
@@ -35,19 +37,37 @@ const Horaires = ({ navigation }: any) => {
       <View style={{ gap: 5 }}>
         <TextInput
           placeholder="Rechercher un arrêt"
-          style={styles.userInput}
+          style={{
+            padding: 10,
+            borderColor: "#2C2C2C",
+            borderWidth: 1,
+            width: "auto",
+            color: colors.text,
+          }}
           value={stopName}
           onChangeText={(text) => setStopName(text)}
         />
         <TextInput
           placeholder="Rechercher une ligne"
-          style={styles.userInput}
+          style={{
+            padding: 10,
+            borderColor: "#2C2C2C",
+            borderWidth: 1,
+            width: "auto",
+            color: colors.text,
+          }}
           value={line}
           onChangeText={(text) => setLine(text)}
         />
         <TextInput
           placeholder="Rechercher une destination"
-          style={styles.userInput}
+          style={{
+            padding: 10,
+            borderColor: "#2C2C2C",
+            borderWidth: 1,
+            width: "auto",
+            color: colors.text,
+          }}
           value={destination}
           onChangeText={(text) => setDestination(text)}
         />
@@ -55,7 +75,7 @@ const Horaires = ({ navigation }: any) => {
           <Text
             style={{
               padding: 10,
-              borderColor: "#000",
+              borderColor: colors.border,
               borderWidth: 1,
               textAlign: "center",
             }}
@@ -67,17 +87,26 @@ const Horaires = ({ navigation }: any) => {
       <View>
         {buses.length > 0 &&
           buses.map((bus, index) => (
-            <Pressable key={index} style={styles.card} android_ripple={{ color: "grey" }}>
-              <Text>
+            <Pressable
+              key={index}
+              style={{
+                padding: 10,
+                borderColor: colors.border,
+                borderWidth: 1,
+                margin: 5,
+              }}
+              android_ripple={{ color: "grey" }}
+            >
+              <Text style={{ color: colors.text }}>
                 {bus.nomcourtligne} - {bus.destination}
               </Text>
-              <Text>
+              <Text style={{ color: colors.text }}>
                 {new Date(bus.arrivee).toLocaleTimeString("fr-FR", {
                   hour: "2-digit",
                   minute: "2-digit",
                   second: "2-digit",
                   hour12: false,
-                })}
+                }).replace(":", "h")}
               </Text>
             </Pressable>
           ))}
@@ -87,18 +116,7 @@ const Horaires = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  userInput: {
-    padding: 10,
-    borderColor: "#000",
-    borderWidth: 1,
-    width: "auto",
-  },
-  card: {
-    padding: 10,
-    borderColor: "#000",
-    borderWidth: 1,
-    margin: 5,
-  },
+  userInput: {},
 });
 
 export default Horaires;
