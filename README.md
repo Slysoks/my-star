@@ -7,7 +7,7 @@ Recréer une application mobile pour la STAR. Le but est de reprendre les featur
 # Fonctionnalités
 - [ ] Horaires des bus et métros
 - [ ] Itinéraires
-- [ ] Prochains passages
+- [x] Prochains passages
 - [ ] Alertes en temps réel
 - [ ] Géolocalisation
 - [ ] Recherche d'arrêts
