@@ -100,6 +100,9 @@ const Horaires = ({ navigation }: any) => {
               <Text style={{ color: colors.text }}>
                 {bus.nomcourtligne} - {bus.destination}
               </Text>
+              <Text style={{ color: colors.text}}>
+                {bus.nomarret}
+              </Text>
               <Text style={{ color: colors.text }}>
                 {new Date(bus.arrivee).toLocaleTimeString("fr-FR", {
                   hour: "2-digit",
