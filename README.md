@@ -1,20 +1,20 @@
 # STAR & Moi
-STAR & Moi est une application mobile open[ ]source basée sur React Native.
+STAR & Moi est une application mobile open- [ ]source basée sur React Native.
 
 # Objectif
 Recréer une application mobile pour la STAR. Le but est de reprendre les features déjà existantes sur l'application et de les améliorer et d'en ajouter de nouvelles.
 
 # Fonctionnalités
-[ ] Horaires des bus et métros
-[ ] Itinéraires
-[ ] Prochains passages
-[ ] Alertes en temps réel
-[ ] Géolocalisation
-[ ] Recherche d'arrêts
-[ ] Favoris
-[ ] Notifications
-[ ] Accessibilité des personnes à mobilité réduite
-[ ] Visualisation des bus sur une carte en temps réel
+- [ ] Horaires des bus et métros
+- [ ] Itinéraires
+- [ ] Prochains passages
+- [ ] Alertes en temps réel
+- [ ] Géolocalisation
+- [ ] Recherche d'arrêts
+- [ ] Favoris
+- [ ] Notifications
+- [ ] Accessibilité des personnes à mobilité réduite
+- [ ] Visualisation des bus sur une carte en temps réel
 
 # 🚀 Installation
 ## Prérequis
