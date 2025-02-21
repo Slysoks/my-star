@@ -36,7 +36,7 @@ const NativeList: React.FC<NativeListProps> = ({
           marginHorizontal: 5,
           borderRadius: 10,
           padding: 10,
-          borderWidth: 2,
+          borderWidth: 1,
           borderColor: theme.colors.border,
           overflow: "hidden",
         }}

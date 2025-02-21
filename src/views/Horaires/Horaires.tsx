@@ -16,6 +16,7 @@ import { useTheme } from "@react-navigation/native";
 
 const Horaires = ({ navigation }: any) => {
   const theme = useTheme();
+  const { colors } = theme;
 
   const [stopName, setStopName] = useState<string>("Loges");
   const [line, setLine] = useState<string>("C1");
