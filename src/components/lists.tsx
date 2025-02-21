@@ -7,6 +7,7 @@ import Reanimated, {
 } from "react-native-reanimated";
 import { CircleHelp } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
+import { type Theme } from "@react-navigation/native";
 
 type EntryOrExitLayoutType = NonNullable<AnimatedProps<{}>["entering"]>;
 
@@ -32,6 +33,7 @@ const NativeList: React.FC<NativeListProps> = ({
     <Reanimated.View
       style={{
         marginHorizontal: 5,
+        gap: 5,
       }}
     >
       <Text
@@ -73,7 +75,7 @@ const NativeList: React.FC<NativeListProps> = ({
 };
 
 interface NativeListItemProps {
-  theme: any;
+  theme: Theme;
   icon?: ReactNode;
   iconColor?: string;
   label: string;
@@ -97,13 +99,16 @@ const NativeListItem: React.FC<NativeListItemProps> = ({
   vibrate = false,
 }) => {
   return (
-    <Pressable android_ripple={{ color: "grey" }} onPress={() => {
-      vibrate && Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      onPress
-    }}
-    style={{
-      padding: 10,
-    }}>
+    <Pressable
+      android_ripple={{ color: "grey" }}
+      onPress={() => {
+        vibrate && Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        onPress;
+      }}
+      style={{
+        padding: 10,
+      }}
+    >
       <Reanimated.View
         entering={entering}
         style={{ flexDirection: "row", position: "relative" }}
@@ -127,8 +132,8 @@ const NativeListItem: React.FC<NativeListItemProps> = ({
             marginLeft: 5,
           }}
         >
-          <Text>{label}</Text>
-          <Text>{sub}</Text>
+          <Text style={{ color: theme.colors.text }}>{label}</Text>
+          <Text style={{ color: theme.colors.text }}>{sub}</Text>
         </Reanimated.View>
         <Reanimated.View
           style={{
@@ -141,7 +146,13 @@ const NativeListItem: React.FC<NativeListItemProps> = ({
           }}
         >
           {trailing}
-          <Text>Test</Text>
+          <Text
+            style={{
+              color: theme.colors.text,
+            }}
+          >
+            Test
+          </Text>
         </Reanimated.View>
       </Reanimated.View>
     </Pressable>

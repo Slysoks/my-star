@@ -2,11 +2,8 @@ import {
   View,
   Text,
   TextInput,
-  ScrollView,
-  StyleSheet,
-  Pressable,
-  Image,
-  Platform,
+  ScrollView, Pressable, Platform,
+  ActivityIndicator
 } from "react-native";
 import Reanimated from "react-native-reanimated";
 import { useEffect, useState } from "react";
@@ -25,18 +22,18 @@ const Horaires = ({ navigation }: any) => {
   const [destination, setDestination] = useState<string>("Saint-Grégoire");
   const [buses, setBuses] = useState<any>([]);
   const [lineColor, setLineColor] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [itemLimit, setItemLimit] = useState<number>(5);
 
   function search() {
-    setLoading(true);
+    setIsLoading(true);
     NextBus({
       stopName: stopName,
       lineName: line,
       destinationName: destination,
     })
       .then((data) => {
-        setLoading(false);
+        setIsLoading(false);
         setBuses(data || []);
       })
       .catch((error) => {
@@ -102,6 +99,7 @@ const Horaires = ({ navigation }: any) => {
               borderColor: colors.border,
               borderWidth: 1,
               textAlign: "center",
+              color: colors.text,
             }}
           >
             Rechercher
@@ -110,7 +108,9 @@ const Horaires = ({ navigation }: any) => {
       </View>
 
       <View style={{ marginTop: 5 }}>
-        {buses?.results?.length > 0 ? (
+        {isLoading ? (
+          <ActivityIndicator color={colors.primary} />
+        ) : buses?.results?.length > 0 ? (
           <Reanimated.View>
             <NativeList theme={theme} label="Liste des arrêts">
               {buses.results.map((bus: any, index: number) => (
@@ -136,7 +136,7 @@ const Horaires = ({ navigation }: any) => {
         ) : (
           <Reanimated.View
             style={{
-              display: "flex",
+              display: buses?.results?.length > 0 ? "none" : "flex",
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "row",
@@ -150,8 +150,8 @@ const Horaires = ({ navigation }: any) => {
             }}
             entering={FadeInDown.springify().easing(Easing.elastic(1))}
           >
-            <CircleAlert color={"#000"} />
-            <Text>Aucun bus trouvé</Text>
+            <CircleAlert color={colors.text} />
+            <Text style={{ color: colors.text }}>Aucun bus trouvé</Text>
           </Reanimated.View>
         )}
       </View>
