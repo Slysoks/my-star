@@ -3,8 +3,19 @@ import { DefaultTheme, DarkTheme, type Theme } from "@react-navigation/native";
 export const fonts = {
   regular: "DMSans-Regular",
   italic: "DMSans-Italic",
-}
+  bold: 800,
+  semiBold: 600,
+  medium: 500,
+  light: 300,
+};
 
+export const radius = {
+  none: 0,
+  small: 4,
+  medium: 8,
+  large: 16,
+  full: 9999,
+};
 
 export const STARLight: Theme = {
   ...DefaultTheme,
@@ -17,7 +28,7 @@ export const STARLight: Theme = {
     border: "#E6E6E6",
     notification: "#F00",
   },
-}
+};
 
 export const STARDark: Theme = {
   ...DarkTheme,
@@ -31,4 +42,4 @@ export const STARDark: Theme = {
     border: "#2C2C2C",
     notification: "#F00",
   },
-}
+};

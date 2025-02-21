@@ -1,18 +1,12 @@
 import {
-  Appearance,
   Platform,
-  SafeAreaView, useColorScheme,
-  StatusBar as RNStatusBar,
-  TouchableOpacity,
-  Text
+  SafeAreaView, StatusBar as RNStatusBar
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import * as NavigationBar from "expo-navigation-bar";
-import { STARLight, STARDark } from "@/consts/themes";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { type Theme } from "@react-navigation/native";
 
 import Router from "@/router";
 

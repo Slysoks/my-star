@@ -28,7 +28,6 @@ const Horaires = ({ navigation }: any) => {
       stopName: stopName,
       lineName: line,
       destinationName: destination,
-      limit: -1,
     })
       .then((data) => {
         setBuses(data.results || []);
@@ -55,19 +54,37 @@ const Horaires = ({ navigation }: any) => {
       <View style={{ gap: 5 }}>
         <TextInput
           placeholder="Rechercher un arrêt"
-          style={styles.userInput}
+          style={{
+            padding: 10,
+            borderColor: "#2C2C2C",
+            borderWidth: 1,
+            width: "auto",
+            color: colors.text,
+          }}
           value={stopName}
           onChangeText={(text) => setStopName(text)}
         />
         <TextInput
           placeholder="Rechercher une ligne"
-          style={styles.userInput}
+          style={{
+            padding: 10,
+            borderColor: "#2C2C2C",
+            borderWidth: 1,
+            width: "auto",
+            color: colors.text,
+          }}
           value={line}
           onChangeText={(text) => setLine(text)}
         />
         <TextInput
           placeholder="Rechercher une destination"
-          style={styles.userInput}
+          style={{
+            padding: 10,
+            borderColor: "#2C2C2C",
+            borderWidth: 1,
+            width: "auto",
+            color: colors.text,
+          }}
           value={destination}
           onChangeText={(text) => setDestination(text)}
         />
@@ -75,7 +92,7 @@ const Horaires = ({ navigation }: any) => {
           <Text
             style={{
               padding: 10,
-              borderColor: "#000",
+              borderColor: colors.border,
               borderWidth: 1,
               textAlign: "center",
             }}
@@ -113,18 +130,7 @@ const Horaires = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  userInput: {
-    padding: 10,
-    borderColor: "#000",
-    borderWidth: 1,
-    width: "auto",
-  },
-  card: {
-    padding: 10,
-    borderColor: "#000",
-    borderWidth: 1,
-    margin: 5,
-  },
+  userInput: {},
 });
 
 export default Horaires;
