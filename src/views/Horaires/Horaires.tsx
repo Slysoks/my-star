@@ -6,12 +6,14 @@ import {
   StyleSheet,
   Pressable,
   Image,
+  Platform,
 } from "react-native";
+import Reanimated from "react-native-reanimated";
 import { useEffect, useState } from "react";
 import { FadeInDown, Easing } from "react-native-reanimated";
 import { LineList, NextBus } from "@/providers/star";
 import { NativeList, NativeListItem } from "@/components/lists";
-import { BusFront, TramFront } from "lucide-react-native";
+import { BusFront, CircleAlert } from "lucide-react-native";
 import { useTheme } from "@react-navigation/native";
 
 const Horaires = ({ navigation }: any) => {
@@ -21,17 +23,21 @@ const Horaires = ({ navigation }: any) => {
   const [stopName, setStopName] = useState<string>("Loges");
   const [line, setLine] = useState<string>("C1");
   const [destination, setDestination] = useState<string>("Saint-Grégoire");
-  const [buses, setBuses] = useState<any[]>([]);
+  const [buses, setBuses] = useState<any>([]);
   const [lineColor, setLineColor] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [itemLimit, setItemLimit] = useState<number>(5);
 
   function search() {
+    setLoading(true);
     NextBus({
       stopName: stopName,
       lineName: line,
       destinationName: destination,
     })
       .then((data) => {
-        setBuses(data.results || []);
+        setLoading(false);
+        setBuses(data || []);
       })
       .catch((error) => {
         console.error(error);
@@ -103,35 +109,54 @@ const Horaires = ({ navigation }: any) => {
         </Pressable>
       </View>
 
-      <View>
-        {buses.length > 0 && (
-          <NativeList theme={theme} label="Liste des arrêts">
-            {buses.map((bus, index) => (
-              <NativeListItem
-                icon={<BusFront color={"#000"} />}
-                iconColor={"#95c11e"}
-                key={index}
-                theme={theme}
-                label={new Date(bus.arrivee).toLocaleTimeString("fr-FR", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })}
-                sub={bus.destination}
-                entering={FadeInDown.springify()
-                  .easing(Easing.elastic(1))
-                  .delay(100 * index)}
-              />
-            ))}
-          </NativeList>
+      <View style={{ marginTop: 5 }}>
+        {buses?.results?.length > 0 ? (
+          <Reanimated.View>
+            <NativeList theme={theme} label="Liste des arrêts">
+              {buses.results.map((bus: any, index: number) => (
+                <NativeListItem
+                  icon={<BusFront color={"#000"} />}
+                  iconColor={"#95c11e"}
+                  key={index}
+                  theme={theme}
+                  label={new Date(bus.arrivee).toLocaleTimeString("fr-FR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })}
+                  sub={bus.destination}
+                  entering={FadeInDown.springify()
+                    .easing(Easing.elastic(1))
+                    .delay(50 * index)}
+                  {...(Platform.OS === "ios" ? { vibrate: true } : {})}
+                />
+              ))}
+            </NativeList>
+          </Reanimated.View>
+        ) : (
+          <Reanimated.View
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
+              gap: 5,
+              marginHorizontal: 10,
+              padding: 10,
+              borderWidth: 1,
+              borderBottomWidth: 2,
+              borderColor: colors.border,
+              borderRadius: 30,
+            }}
+            entering={FadeInDown.springify().easing(Easing.elastic(1))}
+          >
+            <CircleAlert color={"#000"} />
+            <Text>Aucun bus trouvé</Text>
+          </Reanimated.View>
         )}
       </View>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  userInput: {},
-});
 
 export default Horaires;

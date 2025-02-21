@@ -6,6 +6,7 @@ import Reanimated, {
   LinearTransition,
 } from "react-native-reanimated";
 import { CircleHelp } from "lucide-react-native";
+import * as Haptics from "expo-haptics";
 
 type EntryOrExitLayoutType = NonNullable<AnimatedProps<{}>["entering"]>;
 
@@ -28,30 +29,39 @@ const NativeList: React.FC<NativeListProps> = ({
   children,
 }) => {
   return (
-    <Reanimated.View>
-      <Text style={{ color: theme.colors.text }}>{label}</Text>
+    <Reanimated.View
+      style={{
+        marginHorizontal: 5,
+      }}
+    >
+      <Text
+        style={{
+          color: theme.colors.text + "80",
+          textTransform: "uppercase",
+          fontSize: 12,
+        }}
+      >
+        {label}
+      </Text>
       <Reanimated.View
         style={{
           backgroundColor: theme.colors.card,
-          marginHorizontal: 5,
           borderRadius: 10,
-          padding: 10,
           borderWidth: 1,
+          borderBottomWidth: 2,
           borderColor: theme.colors.border,
           overflow: "hidden",
+          marginBottom: 10,
         }}
       >
         {React.Children.map(children, (child, index) => (
           <>
-            <Reanimated.View style={{ overflow: "hidden" }}>
-              {child}
-            </Reanimated.View>
+            {child}
             {index < React.Children.count(children) - 1 && (
               <Reanimated.View
                 style={{
                   height: 1,
                   backgroundColor: theme.colors.border,
-                  marginVertical: 8,
                 }}
               />
             )}
@@ -71,6 +81,8 @@ interface NativeListItemProps {
   trailing?: ReactNode;
   animated?: boolean;
   entering?: EntryOrExitLayoutType;
+  onPress?: () => void;
+  vibrate?: boolean;
 }
 
 const NativeListItem: React.FC<NativeListItemProps> = ({
@@ -80,46 +92,59 @@ const NativeListItem: React.FC<NativeListItemProps> = ({
   label,
   sub,
   trailing,
-  animated = false,
   entering = EntryExitTransition,
+  onPress,
+  vibrate = false,
 }) => {
   return (
-    <Reanimated.View
-      entering={entering}
-      style={{ flexDirection: "row", position: "relative" }}
-    >
+    <Pressable android_ripple={{ color: "grey" }} onPress={() => {
+      vibrate && Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      onPress
+    }}
+    style={{
+      padding: 10,
+    }}>
       <Reanimated.View
-        style={{
-          backgroundColor: iconColor,
-          borderRadius: 10,
-          padding: 10,
-          borderColor: theme.colors.border,
-        }}
+        entering={entering}
+        style={{ flexDirection: "row", position: "relative" }}
       >
-        {icon}
+        <Reanimated.View
+          style={{
+            backgroundColor: iconColor,
+            borderRadius: 10,
+            padding: 10,
+            borderColor: theme.colors.border,
+            width: 40,
+            height: 40,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {icon}
+        </Reanimated.View>
+        <Reanimated.View
+          style={{
+            marginLeft: 5,
+          }}
+        >
+          <Text>{label}</Text>
+          <Text>{sub}</Text>
+        </Reanimated.View>
+        <Reanimated.View
+          style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            bottom: 0,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {trailing}
+          <Text>Test</Text>
+        </Reanimated.View>
       </Reanimated.View>
-      <Reanimated.View
-        style={{
-          marginLeft: 5,
-        }}
-      >
-        <Text>{label}</Text>
-        <Text>{sub}</Text>
-      </Reanimated.View>
-      <Reanimated.View
-        style={{
-          position: "absolute",
-          right: 0,
-          top: 0,
-          bottom: 0,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {trailing}
-        <Text>Test</Text>
-      </Reanimated.View>
-    </Reanimated.View>
+    </Pressable>
   );
 };
 
